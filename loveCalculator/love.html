@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Love Calculator</title>
+    <style>
+        .main{
+            width: 400px;
+            height: 400px;
+            margin:50px auto;
+            background-color: black;
+            text-align: center;
+            padding: 10px;
+            border-radius: 10px;
+            color:white
+        }
+        input,button{
+            padding: 2px 10px;
+            background-color: white;
+        }
+        .box{
+            width: 20%;
+            margin: auto;
+            background-color: purple;
+            border-radius: 50%;
+            text-align: center;
+            padding:1px;
+            color:yellow
+        }
+    </style>
+</head>
+<body>
+    <div class="main">
+        <h1>Love Calculator</h1>
+        <hr/>
+        <div>
+            <br/>
+            <input type="text" id="txt1" placeholder="Enter Your Name"/><br/>
+            <span id="span1"></span><br/>
+            <img src="love5.png" style="width:50px ;text-align: center;"><br/>
+            <input type="text" id="txt2" placeholder="Enter Your Love Name"/><br/>
+            <span id="span2"></span>
+            <br/>
+            <hr/>
+            <br/>
+            <button style="background-color: red;color:white;border-radius: 10px;padding: 10px;" onclick="result()">Calculate Love Percentage</button>
+            <br/><br/>
+            <div class="box">
+                <h3 id="result">100%</h3>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+ 
+    function result(){
+        document.getElementById('span1').innerText=""
+        document.getElementById('span2').innerText=""
+        let txt1 = document.getElementById('txt1').value
+        let txt2 = document.getElementById('txt2').value
+        if(txt1 && txt2){
+            let total = Math.floor(Math.random()*100)
+            let str = (txt1+txt2).replace(/\s/g,"")
+            if(localStorage.getItem(str)){
+                total = localStorage.getItem(str)
+            }else{
+                localStorage.setItem(str,total)
+            }
+            document.getElementById('result').innerText = total+"%"
+        }else{
+            if(!txt1){
+                document.getElementById('span1').innerText = "Please Enter Your Name!"
+                document.getElementById('span1').style.color="red"
+            }
+            if(!txt2){
+                document.getElementById('span2').innerText = "Please Enter Your Love Name!"
+                document.getElementById('span2').style.color="red"
+            }
+        }
+    }
+</script>
+</html>
