@@ -25,10 +25,11 @@
       .innerbox button {
         float: right;
         margin: 20px;
-        background-color: black;
+        background-color:blue;
         color: aqua;
         cursor: pointer;
        font-size: 16px;
+
       }
       .mosquito-box {
         width: 92%;
@@ -42,6 +43,7 @@
         width: 50px;
         position: relative;
         height: 50px;
+        z-index: 100;
       }
       .result{
         width: 300px;
@@ -53,6 +55,7 @@
         border-radius: 10px;
         display: none;
         text-align: center;
+        z-index: 200;
       }
     </style>
   </head>
@@ -68,19 +71,22 @@
         <h3 id="second"><b style="color:white">00:30</b></h3>
         <button id="start" onclick="StartGame()">Start Game</button>
       </div>
-      <div class="mosquito-box">
+      <div class="mosquito-box" id="mosquito-box">
         <div class="result" id="result"></div>
         <img src="mos2.png" id="mosquito" onclick="hit()" />
-        
       </div>
       
     </div>
   </body>
   <script>
+    let x,y,span;
+    let isSpan=false
     let hitCount = 0;
     let isGameStart = false
+    let spanSize=0
     function StartGame() {
         isGameStart = true
+        spanSize=hitCount
         hitCount = 0
         document.getElementById("count").innerText = hitCount;
         document.getElementById("mosquito").style.display="inline"
@@ -88,7 +94,14 @@
 
         var audio = new Audio("aud3.mp3");
         audio.play();
-        
+        if(isSpan){
+          console.log(spanSize)
+          console.log(document.getElementById("mosquito-box"))
+          for(let i=0;i<spanSize;i++){
+            document.querySelector('span').remove()
+          }
+          isSpan=false
+        }
         
              
       let t = 30;
@@ -102,10 +115,10 @@
       let mosquito = document.getElementById("mosquito");
 
       let time = setInterval(() => {
-        let x = Math.floor(Math.random() * 430) + 1;
-        let y = Math.floor(Math.random() * 350) + 1;
+        x = Math.floor(Math.random() * 430) + 1;
+        y = Math.floor(Math.random() * 350) + 1;
         mosquito.style.left = x + "px";
-        mosquito.style.top = y + "px";
+        mosquito.style.top = y + "px";        
 
         document.getElementById("start").innerText = "Game Started";
         document.getElementById("start").style.background = "yellow";
@@ -135,18 +148,31 @@
       }, 31000);
       setTimeout(() => {
         document.getElementById("start").innerText = "Game Start";
-        document.getElementById("start").style.background = "black";
+        document.getElementById("start").style.background = "blue";
         document.getElementById("start").style.color = "aqua";
         document.getElementById("start").disabled = false;
       }, 35000);
     }
+   
     function hit() {
         if(isGameStart == true){
             var audio = new Audio("aud1.mp3");
             audio.play();
-            hitCount++;
+            hitCount++
+            
+            span = document.createElement("span")
+            span.innerText=" 💥 "
+            span.style.position="absolute"
+            span.style.left = (x+10)+"px"
+            span.style.top = (y+10)+"px"
+            // span.style.zIndex=hitCount
+            span.style.overflow="hidden"
+            document.getElementById("mosquito-box").appendChild(span)
+            isSpan=true
             document.getElementById("count").innerText = hitCount;
         }      
     }
+    
+            
   </script>
 </html>
