@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mosquito Game</title>
+    <style>
+      .box {
+        width: 550px;
+        height: 500px;
+        background-color: black;
+        margin: auto;
+        user-select: none;
+      }
+      .innerbox {
+        padding: 6px 5% 0 5%;
+        background-color: black;
+      }
+      .innerbox h3,
+      .innerbox h2 {
+        display: inline-block;
+        color: yellow;
+      }
+      .innerbox button {
+        float: right;
+        margin: 20px;
+        background-color: black;
+        color: aqua;
+        cursor: pointer;
+       font-size: 16px;
+      }
+      .mosquito-box {
+        width: 92%;
+        height: 80%;
+        position: relative;
+        top: 3%;
+        background-color: aliceblue;
+        margin: auto;
+      }
+      .mosquito-box img {
+        width: 50px;
+        position: relative;
+        height: 50px;
+      }
+      .result{
+        width: 300px;
+        position: relative;
+        top:100px;
+        margin:auto;
+        padding: 10px;
+        background-color: blueviolet;
+        border-radius: 10px;
+        display: none;
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="box">
+      <div class="innerbox">
+        <h3>Hit Count :</h3>
+        &nbsp;
+        <h3 id="count"><b style="color:white">0</b></h3>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <h3>Time Left :</h3>
+        &nbsp;
+        <h3 id="second"><b style="color:white">00:30</b></h3>
+        <button id="start" onclick="StartGame()">Start Game</button>
+      </div>
+      <div class="mosquito-box">
+        <div class="result" id="result"></div>
+        <img src="mos2.png" id="mosquito" onclick="hit()" />
+        
+      </div>
+      
+    </div>
+  </body>
+  <script>
+    let hitCount = 0;
+    let isGameStart = false
+    function StartGame() {
+        isGameStart = true
+        hitCount = 0
+        document.getElementById("count").innerText = hitCount;
+        document.getElementById("mosquito").style.display="inline"
+        document.getElementById("result").style.display="none"
+
+        var audio = new Audio("aud3.mp3");
+        audio.play();
+        
+        
+             
+      let t = 30;
+      let tt = setInterval(() => {
+        if (t < 10) document.getElementById("second").innerText = "00:0" + t;
+        else document.getElementById("second").innerText = "00:" + t;
+        if (t == 0) clearInterval(tt);
+        t--;
+      }, 1000);
+
+      let mosquito = document.getElementById("mosquito");
+
+      let time = setInterval(() => {
+        let x = Math.floor(Math.random() * 430) + 1;
+        let y = Math.floor(Math.random() * 350) + 1;
+        mosquito.style.left = x + "px";
+        mosquito.style.top = y + "px";
+
+        document.getElementById("start").innerText = "Game Started";
+        document.getElementById("start").style.background = "yellow";
+        document.getElementById("start").style.color = "red";
+        document.getElementById("start").style.border = "none";
+        document.getElementById("start").disabled = true;
+      }, 1000);
+      setTimeout(() => {
+        clearInterval(time);
+        isGameStart = false
+        document.getElementById("start").innerText = "Game Over";
+        document.getElementById("start").style.background = "red";
+        document.getElementById("start").style.color = "yellow";
+        document.getElementById("start").style.border = "none";
+        document.getElementById("start").disabled = true;
+      
+        
+        audio.pause()
+        var a = new Audio("aud2.mp3");
+            a.play();
+        document.getElementById("mosquito").style.display="none"
+        document.getElementById("result").style.display="block"
+        document.getElementById("result").innerText="Your Score : "+hitCount
+        document.getElementById("result").style.color="white"
+
+
+      }, 31000);
+      setTimeout(() => {
+        document.getElementById("start").innerText = "Game Start";
+        document.getElementById("start").style.background = "black";
+        document.getElementById("start").style.color = "aqua";
+        document.getElementById("start").disabled = false;
+      }, 35000);
+    }
+    function hit() {
+        if(isGameStart == true){
+            var audio = new Audio("aud1.mp3");
+            audio.play();
+            hitCount++;
+            document.getElementById("count").innerText = hitCount;
+        }      
+    }
+  </script>
+</html>
