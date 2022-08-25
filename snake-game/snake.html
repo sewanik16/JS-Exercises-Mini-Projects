@@ -45,10 +45,6 @@
 let lastRenderTime = 0
 let snakeSpeed = 2
 function main(currentTime){
-
-    // var audio = new Audio("startgame.mp3");
-    //     audio.play();
-
     window.requestAnimationFrame(main)
     let secondSinceLastRender = (currentTime - lastRenderTime)/1000
     if(secondSinceLastRender < 1 / snakeSpeed ) return
@@ -60,7 +56,8 @@ function main(currentTime){
     drawFood()
 }
 window.requestAnimationFrame(main)
-
+let isplay=false
+let audioCallOnce = "once"
 let snakeCoordinates = [{x:11,y:11}]
 let inputDirection = {x:0,y:0}
 let lastInputDirection = {x:0,y:0}
@@ -74,7 +71,9 @@ function update(){
     snakeCoordinates[snakeCoordinates.length-1].y += inputDirection.y
 
 }
+let audio1;
 function draw(){
+    
     board.innerHTML=""
     snakeCoordinates.map((segment)=>{
         
@@ -86,23 +85,39 @@ function draw(){
         board.appendChild(snake)
         // console.log(segment.x,segment.y)
         if(segment.x==0 || segment.x==22 || segment.y==0 || segment.y==22 ){
-            audio = new Audio("endgame.mp3");
-             audio.play();
+            audio1.pause()
+            var aa = new Audio("endgame.mp3");
+             aa.play();   
+             
             board.innerHTML=""
             board.style.background="red"
+            
             snakeCoordinates = [{x:11,y:11}]
             inputDirection = {x:0,y:0}
+
             setTimeout(()=>{
                 alert("You loose game")
                 board.style.background="black"
-            },1000)
-            
-            
+                audioCallOnce="once"
+            },1000)   
+             
+             
+        }
+        else{
+            if(isplay){
+                audio1 = new Audio("startgame.mp3");
+                    audio1.play();
+                    isplay=false
+                    audioCallOnce=""
+            }
         }
     })
    
-}
+}   
+
 window.addEventListener("keydown",(e)=>{
+    if(audioCallOnce=="once") isplay=true
+
     switch(e.key){
         case "ArrowUp" : 
         if(lastInputDirection.y != 0) break
@@ -128,10 +143,11 @@ function updateFood(){
     if(onFood(food)){
         var audio = new Audio("attack.mp3");
         audio.play();
-        snakeCoordinates.unshift({x:food[0].m,y:food[0].n})
         draw()
+        snakeCoordinates.unshift({x:food[0].m,y:food[0].n})
         food[0].m = Math.floor(Math.random() * 21) + 1;
         food[0].n = Math.floor(Math.random() * 21) + 1;
+        
     } 
 }
 function drawFood(){
@@ -150,5 +166,6 @@ function onFood(food){
         return (segment.x==food[0].m && segment.y==food[0].n)
     })
 }
+
 </script>
 </html>
