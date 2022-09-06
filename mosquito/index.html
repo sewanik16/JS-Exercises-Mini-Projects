@@ -105,11 +105,14 @@
         
              
       let t = 30;
+
       let tt = setInterval(() => {
         if (t < 10) document.getElementById("second").innerText = "00:0" + t;
         else document.getElementById("second").innerText = "00:" + t;
+
         if (t == 0) clearInterval(tt);
         t--;
+        
       }, 1000);
 
       let mosquito = document.getElementById("mosquito");
